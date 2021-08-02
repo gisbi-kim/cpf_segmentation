@@ -473,18 +473,43 @@ void Segmentation::doSegmentation(){
     label_to_seg_map[cluster_itr_->first] = supervoxel_labels.at(idx);
     idx++;
   }
-  typename pcl::PointCloud<pcl::PointXYZL>::iterator point_itr = (*segmented_cloud_ptr_).begin();
-  uint32_t zero_label = 0;
-  for (; point_itr != (*segmented_cloud_ptr_).end(); ++point_itr)
-  {
-    if (point_itr->label == 0){
-      zero_label++;
-    }else{
-      point_itr->label = label_to_seg_map[point_itr->label];
-    }
-  }
-  printf("All Time taken: %.2fms\n", (double)(clock() - sv_start)/(CLOCKS_PER_SEC/1000));
 
+  // pcl::PointCloud<pcl::PointXYZRGBL>::Ptr colored_seg_pc;
+  colored_segmented_cloud_ptr_.reset(new pcl::PointCloud<pcl::PointXYZRGBL>());
+
+  uint32_t zero_label = 0;
+  uint32_t pt_counter = 0;
+  // typename pcl::PointCloud<pcl::PointXYZL>::iterator point_itr = (*segmented_cloud_ptr_).begin();
+  for (auto point_itr = (*segmented_cloud_ptr_).begin(); point_itr != (*segmented_cloud_ptr_).end(); ++point_itr)
+  {
+    if (point_itr->label == 0) {
+      zero_label++;
+    } else{
+      point_itr->label = label_to_seg_map[point_itr->label];
+
+      // giseop 
+      pcl::PointXYZRGBL _point; 
+      _point.x = point_itr->x;
+      _point.y = point_itr->y;
+      _point.z = point_itr->z;
+      _point.r = input_cloud_ptr_->points[pt_counter].r;
+      _point.g = input_cloud_ptr_->points[pt_counter].g;
+      _point.b = input_cloud_ptr_->points[pt_counter].b;
+      _point.label = point_itr->label;
+      colored_segmented_cloud_ptr_->push_back(_point);
+
+      // colored_segmented_cloud_ptr_->points[pt_counter].x = point_itr->x;
+      // colored_segmented_cloud_ptr_->points[pt_counter].y = point_itr->y;
+      // colored_segmented_cloud_ptr_->points[pt_counter].z = point_itr->z;
+      // colored_segmented_cloud_ptr_->points[pt_counter].r = input_cloud_ptr_->points[pt_counter].r;
+      // colored_segmented_cloud_ptr_->points[pt_counter].g = input_cloud_ptr_->points[pt_counter].g;
+      // colored_segmented_cloud_ptr_->points[pt_counter].b = input_cloud_ptr_->points[pt_counter].b;
+      // colored_segmented_cloud_ptr_->points[pt_counter].label = label_to_seg_map[point_itr->label];
+    }
+    pt_counter++;
+  }
+  std::cout << "segmented_cloud_ptr_ pt_counter " << pt_counter << std::endl; 
+  printf("All Time taken: %.2fms\n", (double)(clock() - sv_start)/(CLOCKS_PER_SEC/1000));
 
 }
 /// END main

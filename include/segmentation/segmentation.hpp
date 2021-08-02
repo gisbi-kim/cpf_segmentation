@@ -142,8 +142,13 @@ namespace APC {
     * @brief segmentedPointCloud
     * @return the segmented point cloud
     */
-    pcl::PointCloud<pcl::PointXYZL>::Ptr getSegmentedPointCloud(){return segmented_cloud_ptr_;}
+    pcl::PointCloud<pcl::PointXYZL>::Ptr getSegmentedPointCloud(){
+      return segmented_cloud_ptr_;
+    }
 
+    pcl::PointCloud<pcl::PointXYZRGBL>::Ptr getColoredSegmentedPointCloud(){
+      return colored_segmented_cloud_ptr_;
+    }
 
   private:
 
@@ -151,7 +156,7 @@ namespace APC {
 
     pcl::PointCloud<PointT>::Ptr input_cloud_ptr_;
     pcl::PointCloud<pcl::PointXYZL>::Ptr segmented_cloud_ptr_;
-
+    pcl::PointCloud<pcl::PointXYZRGBL>::Ptr colored_segmented_cloud_ptr_;
 
   };
 

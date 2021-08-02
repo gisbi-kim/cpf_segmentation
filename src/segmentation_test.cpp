@@ -105,8 +105,10 @@ int main(int argc, char** argv){
   seg.doSegmentation();
 
   pcl::PointCloud<pcl::PointXYZL>::Ptr segmented_cloud_ptr;
-
   segmented_cloud_ptr=seg.getSegmentedPointCloud();
+
+  pcl::PointCloud<pcl::PointXYZRGBL>::Ptr colored_segmented_cloud_ptr;
+  colored_segmented_cloud_ptr=seg.getColoredSegmentedPointCloud();
 
   bool output_specified = pcl::console::find_switch (argc, argv, "-o");
   if (output_specified)
@@ -127,7 +129,7 @@ int main(int argc, char** argv){
     PCL_INFO ("Saving output\n");
     cout << "saved path: " << outputname << endl;
     bool save_binary_pcd = false;
-    pcl::io::savePCDFile (outputname, *segmented_cloud_ptr, save_binary_pcd);
+    pcl::io::savePCDFile (outputname, *colored_segmented_cloud_ptr, save_binary_pcd);
   }
 
   /// -----------------------------------|  Visualization  |-----------------------------------
