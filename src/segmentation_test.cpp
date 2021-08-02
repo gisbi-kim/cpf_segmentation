@@ -43,14 +43,20 @@
 using namespace std;
 using namespace APC;
 int main(int argc, char** argv){
+
+  cout << "hi " << endl;
   
+  std::string alpha_str ("");
+  pcl::console::parse (argc, argv, "-a", alpha_str);
+
   Segmentation seg;
   Config config;
-  config.noise_threshold = 0.01; // 1cm
-  config.voxel_resolution = 0.008f;// 0.8cm
-  config.seed_resolution = 0.08f; // 8cm
-  config.min_plane_area = 0.01f; // m^2;
-  config.max_curvature = 0.01;
+  float alpha = std::stof(alpha_str);
+  config.noise_threshold = 0.01*alpha; // 1cm
+  config.voxel_resolution = 0.008f*alpha;// 0.8cm
+  config.seed_resolution = 0.08f*alpha; // 8cm
+  config.min_plane_area = 0.01f*alpha; // m^2;
+  config.max_curvature = 0.01*alpha;
   seg.setConfig(config);
 
   PCL_INFO ("Loading pointcloud\n");
@@ -119,6 +125,7 @@ int main(int argc, char** argv){
 
     outputname+="_seg.pcd";
     PCL_INFO ("Saving output\n");
+    cout << "saved path: " << outputname << endl;
     bool save_binary_pcd = false;
     pcl::io::savePCDFile (outputname, *segmented_cloud_ptr, save_binary_pcd);
   }

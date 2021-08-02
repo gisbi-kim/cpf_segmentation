@@ -106,6 +106,7 @@ public:
         max_curvature=config.max_curvature;
         gc_scale=config.gc_scale;
 
+        return *this;
     }
 
 };

@@ -1,0 +1,3 @@
+./segmentation_test ../test_data/scene0739_00_vh_clean_2_cut.pcd -o test -a 3
+
+./segmentation_test ../test_data/scene0739_00_vh_clean_2_cut_part.pcd -o test_part -a 3
